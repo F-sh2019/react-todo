@@ -1,5 +1,4 @@
 
-
 const todoList=[
     { id:0 , title:"Study the  React Book"},
     { id:1 , title:"Watch Lesson\'s Video"},
