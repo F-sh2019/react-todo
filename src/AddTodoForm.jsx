@@ -4,6 +4,7 @@ export default function AddTodoForm(){
 const handleAddTodo= (event)=>{
     event.preventDefault();
     console.log(event.target.value);
+    form.reset();
 };
 
 return (
