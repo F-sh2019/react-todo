@@ -7,7 +7,7 @@ const handleAddTodo= (event)=>{
     const input = form.querySelector("input");
     const todoTitle = input.value;
     console.log(todoTitle);
-   // props.onAddTodo(todoTitle);
+    props.onAddTodo(todoTitle);
     form.reset();
 };
 

@@ -15,8 +15,8 @@ function App() {
 
   return (
     <>
-      <h1>Todo List </h1>
-      <AddTodoForm onAddTodo={setNewTodo}/>
+       <h1>Todo List </h1>
+       <AddTodoForm onAddTodo={setNewTodo}/>
        <p>{newTodo}</p>
       <TodoList /> 
     </>
