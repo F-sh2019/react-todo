@@ -10,9 +10,8 @@ export default function TodoList(){
 return (
    
     <ul >
-      {//todoList.map(({id , title})=>
-      //( <li key={id}>{title}</li>))
-      todoList.map((item)=><TodoListItem key={item.id} todo={item.title}/>)
+      {
+      todoList.map((item)=><TodoListItem key={item.id} todo={item.title} id={item.id}/>)
       }
     </ul>
     

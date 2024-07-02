@@ -1,11 +1,16 @@
 
 export default function AddTodoForm(){
 
-return (
-<form>
+const handleAddTodo= (event)=>{
+    event.preventDefault();
+    console.log(event.target.value);
+};
 
-<label htmlfor="todotitle"></label>
-<input id="todotitle" name="title"/>
+return (
+<form onSubmit={handleAddTodo}>
+
+<label htmlFor="todotitle"></label>
+<input id="todotitle" name="title"  onChange ={handleAddTodo}/>
 <button type="submit">Add</button>
 
 </form>
