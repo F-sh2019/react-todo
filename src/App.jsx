@@ -5,14 +5,20 @@ import React from 'react';
 import './App.css'
 import TodoList from './TodoList'
 import AddTodoForm from './AddTodoForm';
-import { useState } from 'react';
 
+import { useEffect , useState } from 'react';
 
 
 function App() {
  
-  
-  const [todoList, settodoList]=useState([]);
+  const existingTodo=JSON.parse(localStorage.getItem("savedTodoList")) ?? [];
+  const [todoList, settodoList]=useState(existingTodo);
+
+  useEffect(()=>{
+    const todoListString= JSON.stringify(todoList) ;
+    localStorage.setItem("savedTodoList",todoListString) ;
+  },[todoList]);
+
   function addTodo(newTodo){
     settodoList((prevousTodoList)=> [...prevousTodoList , newTodo]);
   }
