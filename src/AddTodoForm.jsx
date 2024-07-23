@@ -7,11 +7,15 @@ const  handleTitleChange =(event)=>{
     settodoTitle (newTodoTitle);
 };
 
+
 const handleAddTodo = (event)=>{
     event.preventDefault();
     const form= event.target ;
-    props.onAddTodo(todoTitle);
-    form.reset();
+    const newTodo={
+        title:todoTitle , id: Date.now() ,
+    } ;
+    props.onAddTodo(newTodo);
+    settodoTitle("");
 };
 
 
