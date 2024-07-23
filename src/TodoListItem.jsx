@@ -1,7 +1,7 @@
 //const TodoListItem = (props) => <li key={props.id}>{props.todo}</li>;
-export default function TodoListItem(props){
+export default function TodoListItem({todo}){
     return(
-        <li key={props.id}>{props.todo}</li>
+        <li >{todo}</li>
     );
 
 }
