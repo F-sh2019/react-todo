@@ -12,13 +12,14 @@ import { useState } from 'react';
 function App() {
  
   const [newTodo ,setNewTodo]= useState("") ;
+  const [todoList, settodoList]=useState([]);
 
   return (
     <>
        <h1>Todo List </h1>
        <AddTodoForm onAddTodo={setNewTodo}/>
        <p>{newTodo}</p>
-      <TodoList /> 
+       <TodoList todoList={todoList} /> 
     </>
   );
 }
