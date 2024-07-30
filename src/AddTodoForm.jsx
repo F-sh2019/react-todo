@@ -20,7 +20,7 @@ export default function AddTodoForm({onAddTodo}){
 
     return (
         <form onSubmit={handleAddTodo}>
-        <InputWithLabel todoTitle={todoTitle}  handleTitleChange={handleTitleChange} label="Add a new Todo"/>
+        <InputWithLabel todoTitle={todoTitle}  handleTitleChange={handleTitleChange}><p>Add Todo!</p></InputWithLabel>
         <button type="submit">Add</button>
         </form>
     );
