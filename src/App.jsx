@@ -5,14 +5,26 @@ import React from 'react';
 import './App.css'
 import TodoList from './TodoList'
 import AddTodoForm from './AddTodoForm';
-import { useState } from 'react';
+import { useEffect , useState } from 'react';
 
 
+//custom hook
+function useSemiPersistantState(){
+
+  const existingTodo=JSON.parse(localStorage.getItem("savedTodoList")) ?? [];
+  const [todoList, settodoList]=useState(existingTodo);
+
+  useEffect(()=>{
+    const todoListString= JSON.stringify(todoList) ;
+    localStorage.setItem("savedTodoList",todoListString) ;
+  },[todoList]);
+   return [todoList , settodoList] ;
+}
 
 function App() {
- 
+ //destructive way to connectto hook
+  const [todoList ,settodoList]= useSemiPersistantState();
   
-  const [todoList, settodoList]=useState([]);
   function addTodo(newTodo){
     settodoList((prevousTodoList)=> [...prevousTodoList , newTodo]);
   }
