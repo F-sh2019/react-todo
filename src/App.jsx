@@ -16,24 +16,32 @@ function useSemiPersistantState(){
 
   useEffect(()=>{
     const todoListString= JSON.stringify(todoList) ;
-    localStorage.setItem("savedTodoList",todoListString) ;
-  },[todoList]);
+    localStorage.setItem("savedTodoList",todoListString) ;}
+    ,[todoList]);
+  
    return [todoList , settodoList] ;
 }
 
+
 function App() {
- //destructive way to connectto hook
+  
   const [todoList ,settodoList]= useSemiPersistantState();
   
   function addTodo(newTodo){
     settodoList((prevousTodoList)=> [...prevousTodoList , newTodo]);
   }
 
+  function removeTodo(id){
+    
+    const filteredTodoList = todoList.filter((todo) => todo.id !== id);
+    
+    settodoList(filteredTodoList);
+  }
   return (
     <>
        <h1>Todo List </h1>
        <AddTodoForm onAddTodo={addTodo}/>
-       <TodoList todoList={todoList} /> 
+       <TodoList todoList={todoList} onRemoveTodo={removeTodo} /> 
     </>
   );
 }
