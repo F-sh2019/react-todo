@@ -1,7 +1,13 @@
-//const TodoListItem = (props) => <li key={props.id}>{props.todo}</li>;
-export default function TodoListItem({todo}){
+
+export default function TodoListItem({todo , onRemoveTodo , id}){
+
+
     return(
-        <li >{todo}</li>
+        <>
+        <li>
+            {todo} <button onClick={()=>onRemoveTodo(id)} >Remove</button>
+        </li>
+        </>
     );
 
 }
