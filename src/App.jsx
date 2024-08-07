@@ -27,6 +27,22 @@ function App() {
   
   const [todoList ,settodoList]= useSemiPersistantState();
   
+  useEffect(() =>{ 
+    new Promise((resolve , reject) =>{
+     setTimeout(()=> {
+      const existingTodo=JSON.parse(localStorage.getItem("savedTodoList")) ?? [];
+      const object={
+          data: {todoList :existingTodo,}, 
+          };
+      resolve(object) ;
+     } ,2000) ;
+    }).then((result) => {
+      
+      settodoList(result.data.TodoList)
+    });
+  },[] ) ;
+
+
   function addTodo(newTodo){
     settodoList((prevousTodoList)=> [...prevousTodoList , newTodo]);
   }
