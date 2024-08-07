@@ -9,38 +9,42 @@ import { useEffect , useState } from 'react';
 
 
 //custom hook
-function useSemiPersistantState(){
+// function useSemiPersistantState(){
 
-  const existingTodo=JSON.parse(localStorage.getItem("savedTodoList")) ?? [];
-  const [todoList, settodoList]=useState(existingTodo);
+//   const existingTodo=JSON.parse(localStorage.getItem("savedTodoList")) ?? [];
+//   const [todoList, settodoList]=useState(existingTodo);
 
-  useEffect(()=>{
-    const todoListString= JSON.stringify(todoList) ;
-    localStorage.setItem("savedTodoList",todoListString) ;}
-    ,[todoList]);
+//   useEffect(()=>{
+//     const todoListString= JSON.stringify(todoList) ;
+//     localStorage.setItem("savedTodoList",todoListString) ;}
+//     ,[todoList]);
   
-   return [todoList , settodoList] ;
-}
+//    return [todoList , settodoList] ;
+// }
 
 
 function App() {
   
-  const [todoList ,settodoList]= useSemiPersistantState();
+  const [todoList ,settodoList]= useState([]);
   
-  useEffect(() =>{ 
-    new Promise((resolve , reject) =>{
-     setTimeout(()=> {
-      const existingTodo=JSON.parse(localStorage.getItem("savedTodoList")) ?? [];
-      const object={
-          data: {todoList :existingTodo,}, 
-          };
-      resolve(object) ;
-     } ,2000) ;
+  useEffect(() => {
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const existingTodo =
+          JSON.parse(localStorage.getItem("savedTodoList")) ?? [];
+        const object = {
+          data: {
+            todoList: existingTodo,
+          },
+        };
+        resolve(object);
+      }, 2000);
     }).then((result) => {
-      
-      settodoList(result.data.TodoList)
+      const retrievedTodoList = result.data.todoList;
+      setMooseList(retrievedTodoList);
+      setIsLoading(false);
     });
-  },[] ) ;
+  }, []);
 
 
   function addTodo(newTodo){
