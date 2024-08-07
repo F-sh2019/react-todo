@@ -26,6 +26,7 @@ import { useEffect , useState } from 'react';
 function App() {
   
   const [todoList ,settodoList]= useState([]);
+  const [isLoading ,setIsLoading ]=useState(true) ;
   
   useEffect(() => {
     new Promise((resolve, reject) => {
@@ -41,10 +42,17 @@ function App() {
       }, 2000);
     }).then((result) => {
       const retrievedTodoList = result.data.todoList;
-      setMooseList(retrievedTodoList);
+      settodoList(retrievedTodoList);
       setIsLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      const todoListString = JSON.stringify(todoList);
+      localStorage.setItem("savedTodoList", todoListString);
+    }
+  }, [todoList, isLoading]);
 
 
   function addTodo(newTodo){
