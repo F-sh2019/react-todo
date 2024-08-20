@@ -7,44 +7,36 @@ import TodoList from './TodoList'
 import AddTodoForm from './AddTodoForm';
 import { useEffect , useState } from 'react';
 
-
-//custom hook
-// function useSemiPersistantState(){
-
-//   const existingTodo=JSON.parse(localStorage.getItem("savedTodoList")) ?? [];
-//   const [todoList, settodoList]=useState(existingTodo);
-
-//   useEffect(()=>{
-//     const todoListString= JSON.stringify(todoList) ;
-//     localStorage.setItem("savedTodoList",todoListString) ;}
-//     ,[todoList]);
-  
-//    return [todoList , settodoList] ;
-// }
-
-
 function App() {
   
   const [todoList ,settodoList]= useState([]);
   const [isLoading ,setIsLoading ]=useState(true) ;
   
+  async function fetchData(){
+  const options={
+    method:"Get" ,
+    headers:{Authorization:`Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`},
+  } ;
+  
+  const url=`https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+
+  try{
+    const response = await fetch(url, options) ;
+    if (! response.ok){
+      throw new Err(`${response.status}`) ;
+    }
+    const data=await response.json();
+    console.log(data);
+    //const Todos= data.record.map()
+
+  }
+  catch(error){
+    console.log(error.message) ;
+    return null;
+  }
+}
   useEffect(() => {
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const existingTodo =
-          JSON.parse(localStorage.getItem("savedTodoList")) ?? [];
-        const object = {
-          data: {
-            todoList: existingTodo,
-          },
-        };
-        resolve(object);
-      }, 2000);
-    }).then((result) => {
-      const retrievedTodoList = result.data.todoList;
-      settodoList(retrievedTodoList);
-      setIsLoading(false);
-    });
+      fetchData()
   }, []);
 
   useEffect(() => {
