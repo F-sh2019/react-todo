@@ -27,8 +27,12 @@ function App() {
     }
     const data=await response.json();
     console.log(data);
-    //const Todos= data.record.map()
-
+     const Todos= data.records.map((Td)=> {return {  id:Td.id , title:Td.fields.Title }; 
+          
+     });
+     console.log("Todo:" , Todos);
+     settodoList(Todos);
+     setIsLoading (false);
   }
   catch(error){
     console.log(error.message) ;
