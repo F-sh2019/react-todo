@@ -12,6 +12,48 @@ function App() {
   const [todoList ,settodoList]= useState([]);
   const [isLoading ,setIsLoading ]=useState(true) ;
   
+  async function addTodoItem(newTodoTitle) {
+    const options = {
+      method: "POST",
+      headers: {
+        headers:{Authorization:`Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`},
+        "Content-Type": "application/json",
+        "Access-Control-Request-Method": "CORD"
+      },
+      body: JSON.stringify({
+        records: [
+          {
+            fields: {
+              title: newTodoTitle,
+            },
+          },
+        ],
+      }),
+    };
+    const url=`https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+  
+    try {
+      const response = await fetch(url, options);
+  
+      if (!response.ok) {
+        throw new Error(`${response.status}`);
+      }
+  
+      const data = await response.json();
+  
+      const newTodoList = {
+        title: data.records[0].fields.title,
+        id: data.records[0].id,
+      };
+  
+      setTodoList((prevousTodoList) => [newTodoList, ...prevousTodoList]);
+    } catch (error) {
+      console.log(error.message);
+      return null;
+    }
+  }
+
+
   async function fetchData(){
   const options={
     method:"Get" ,
@@ -27,7 +69,7 @@ function App() {
     }
     const data=await response.json();
     console.log(data);
-     const Todos= data.records.map((Td)=> {return {  id:Td.id , title:Td.fields.Title }; 
+     const Todos= data.records.map((Td)=> {return {  id:Td.id , title:Td.fields.title }; 
           
      });
      console.log("Todo:" , Todos);
@@ -39,22 +81,14 @@ function App() {
     return null;
   }
 }
+
+
+
   useEffect(() => {
       fetchData()
   }, []);
 
-  useEffect(() => {
-    if (!isLoading) {
-      const todoListString = JSON.stringify(todoList);
-      localStorage.setItem("savedTodoList", todoListString);
-    }
-  }, [todoList, isLoading]);
-
-
-  function addTodo(newTodo){
-    settodoList((prevousTodoList)=> [...prevousTodoList , newTodo]);
-  }
-
+  
   function removeTodo(id){
     
     const filteredTodoList = todoList.filter((todo) => todo.id !== id);
@@ -64,7 +98,7 @@ function App() {
   return (
     <>
        <h1>Todo List </h1>
-       <AddTodoForm onAddTodo={addTodo}/>
+       <AddTodoForm onAddTodo={addTodoItem}/>
        {isLoading ? (
         <p>Loading...</p>
       ) : (
