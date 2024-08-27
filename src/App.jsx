@@ -25,7 +25,6 @@ function App() {
         records: [
           {
             fields: {
-              
               title: newTodoTitle,
             },
           },
@@ -93,9 +92,7 @@ function App() {
 
   
   function removeTodo(id){
-    
     const filteredTodoList = todoList.filter((todo) => todo.id !== id);
-    
     settodoList(filteredTodoList);
   }
   return (
