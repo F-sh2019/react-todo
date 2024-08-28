@@ -13,7 +13,41 @@ function App() {
   const [todoList ,settodoList]= useState([]);
   const [isLoading ,setIsLoading ]=useState(true) ;
   
- 
+  async function RemoveTodoItem(todoId) {
+    //console.log(newTodoTitle)
+    const options = {
+      method: "DELETE",
+      headers: {
+        Authorization:`Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+    };
+    const Delurl = `${url}/${todoId}`;
+   
+    try {
+      const response = await fetch(Delurl, options);
+      if (!response.ok) {
+        throw new Error(`${response.status}`);
+      }
+      
+
+      const data = await response.json();
+      if (!data.deleted) {
+        throw new Error(data.message);
+      }
+
+      console.log(data)
+      settodoList((prevousTodoList) => 
+        prevousTodoList.filter((todo) => todo.id !== data.id));
+    } 
+    catch (error) {
+      console.log(error.message);
+      return null;
+    }
+  }
+
+   
+
 
   
   async function addTodoItem(newTodoTitle) {
@@ -90,10 +124,10 @@ function App() {
   }, []);
 
   
-  function removeTodo(id){
-    const filteredTodoList = todoList.filter((todo) => todo.id !== id);
-    settodoList(filteredTodoList);
-  }
+  // function removeTodo(id){
+  //   const filteredTodoList = todoList.filter((todo) => todo.id !== id);
+  //   settodoList(filteredTodoList);
+  // }
   return (
     <BrowserRouter>
       <Routes>
@@ -104,7 +138,7 @@ function App() {
           {isLoading ? (
             <p>Loading...</p>
             ) : (
-              <TodoList todoList={todoList} onRemoveTodo={removeTodo} /> 
+              <TodoList todoList={todoList} onRemoveTodo={RemoveTodoItem} /> 
             )}
             </>
             }>
