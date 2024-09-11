@@ -2,11 +2,12 @@
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import React from 'react';
-import './App.css'
+import styles from './App.module.css'
 import TodoList from './TodoList'
 import AddTodoForm from './AddTodoForm';
 import { useEffect , useState } from 'react';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
+
 const url=`https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
 function App() {
   
@@ -14,7 +15,7 @@ function App() {
   const [isLoading ,setIsLoading ]=useState(true) ;
   
   async function RemoveTodoItem(todoId) {
-    //console.log(newTodoTitle)
+    
     const options = {
       method: "DELETE",
       headers: {
@@ -22,10 +23,10 @@ function App() {
         "Content-Type": "application/json",
       },
     };
-    const Delurl = `${url}/${todoId}`;
+    const delUrl = `${url}/${todoId}`;
    
     try {
-      const response = await fetch(Delurl, options);
+      const response = await fetch(delUrl, options);
       if (!response.ok) {
         throw new Error(`${response.status}`);
       }
@@ -103,11 +104,11 @@ function App() {
       throw new Err(`${response.status}`) ;
     }
     const data=await response.json();
-    //console.log(data);
+   
      const Todos= data.records.map((Td)=> {return {  id:Td.id , title:Td.fields.title }; 
           
      });
-    // console.log("Todo:" , Todos);
+
      settodoList(Todos);
      setIsLoading (false);
   }
@@ -124,23 +125,23 @@ function App() {
   }, []);
 
   
-  // function removeTodo(id){
-  //   const filteredTodoList = todoList.filter((todo) => todo.id !== id);
-  //   settodoList(filteredTodoList);
-  // }
+  
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={
-          <>
-          <h1>Todo List </h1>
-          <AddTodoForm onAddTodo={addTodoItem}/>
-          {isLoading ? (
-            <p>Loading...</p>
-            ) : (
-              <TodoList todoList={todoList} onRemoveTodo={RemoveTodoItem} /> 
-            )}
-            </>
+          <main className={styles.main}>
+              
+                <div className={styles.test}><h1 >Todo List </h1></div>
+                 
+                <div className={styles.test}><AddTodoForm onAddTodo={addTodoItem}/></div>
+                {isLoading ? (
+                  <p>Loading...</p>
+                  ) : (
+                    <TodoList todoList={todoList} onRemoveTodo={RemoveTodoItem} /> 
+                  )}
+               
+          </main>
             }>
           
         </Route>
