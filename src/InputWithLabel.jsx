@@ -5,7 +5,7 @@ export default function InputWithLabel(props){
     const inputRef =useRef() ;
     
     useEffect(()=>{
-        inputRef.current.focuse
+        inputRef.current.focus
     }) ; 
 
    
