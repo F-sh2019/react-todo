@@ -1,4 +1,6 @@
 import styles from "./TodoListItem.module.css"
+import PropTypes from 'prop-types';
+
 export default function TodoListItem({todo , onRemoveTodo , id}){
 
 
@@ -11,3 +13,9 @@ export default function TodoListItem({todo , onRemoveTodo , id}){
     );
 
 }
+TodoListItem.PropTypes={
+    todo:PropTypes.func,
+    onRemoveTodo: PropTypes.func,
+    id:PropTypes.func,
+  
+  } ;

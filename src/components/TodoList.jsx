@@ -1,4 +1,5 @@
 import TodoListItem from "./TodoListItem";
+import PropTypes from 'prop-types';
 
 export default function TodoList({todoList ,onRemoveTodo}){
     
@@ -13,3 +14,9 @@ return (
     
 )
 }
+TodoList.PropTypes={
+  todoList:PropTypes.func,
+  onRemoveTodo: PropTypes.func,
+  
+
+} ;
