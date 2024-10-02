@@ -99,16 +99,27 @@ function App() {
  
 
   try{
-    const response = await fetch(url, options) ;
+    const response = await fetch(url, options);
     if (! response.ok){
       throw new Err(`${response.status}`) ;
     }
     const data=await response.json();
    
-     const Todos= data.records.map((Td)=> {return {  id:Td.id , title:Td.fields.title }; 
-          
-     });
+    
+     const Todos= data.records.map((Td)=> {return {  id:Td.id , title:Td.fields.title }; });
 
+     console.log(Todos);
+     const todosList=Todos.sort((objectA, objectB)=>{
+      if (objectA.title< objectB.title){
+        return 1;
+      } else if(objectA.title===objectB.title){
+        return 0;
+      } else {
+        return -1;
+      }
+    }) ;
+    console.log(todosList);
+    
      settodoList(Todos);
      setIsLoading (false);
   }
