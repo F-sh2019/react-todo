@@ -8,7 +8,7 @@ import AddTodoForm from './components/AddTodoForm';
 import { useEffect , useState } from 'react';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
-const url=`https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+const url=`https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}?view=Grid%20view`;
 function App() {
   
   const [todoList ,settodoList]= useState([]);
