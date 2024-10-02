@@ -13,7 +13,11 @@ function App() {
   
   const [todoList ,settodoList]= useState([]);
   const [isLoading ,setIsLoading ]=useState(true) ;
+  const [sortAcs , setSortAcs]=useState(true); 
   
+  
+
+
   async function RemoveTodoItem(todoId) {
     
     const options = {
@@ -104,12 +108,8 @@ function App() {
       throw new Err(`${response.status}`) ;
     }
     const data=await response.json();
-   
-    
-     const Todos= data.records.map((Td)=> {return {  id:Td.id , title:Td.fields.title }; });
-
-     console.log(Todos);
-     const todosList=Todos.sort((objectA, objectB)=>{
+    const Todos= data.records.map((Td)=> {return {  id:Td.id , title:Td.fields.title }; });
+    const todosList=Todos.sort((objectA, objectB)=>{
       if (objectA.title< objectB.title){
         return 1;
       } else if(objectA.title===objectB.title){
@@ -118,8 +118,7 @@ function App() {
         return -1;
       }
     }) ;
-    console.log(todosList);
-    
+  
      settodoList(Todos);
      setIsLoading (false);
   }
@@ -135,7 +134,20 @@ function App() {
       fetchData()
   }, []);
 
-  
+  function handleSortToggleClick(){
+    setSortAcs(!sortAcs); // Toggle between Asc and Desc
+    const sortedList = [...todoList].sort((a, b) => {
+      if (sortAcs) {
+        // Sort Descending
+        return a.title.toLowerCase() > b.title.toLowerCase() ? -1 : 1;
+      } else {
+        // Sort Ascending
+        return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1;
+      }
+    });
+    settodoList(sortedList);
+
+  }
   
   return (
     <BrowserRouter>
@@ -144,8 +156,9 @@ function App() {
           <main className={styles.main}>
               
                 <div className={styles.test}><h1 >Todo List </h1></div>
-                 
-                <div className={styles.test}><AddTodoForm onAddTodo={addTodoItem}/></div>
+                
+                <div className={styles.test}><button onClick={handleSortToggleClick}>{sortAcs ? "Sort Asc" : "Sort Desc"}</button>
+                <AddTodoForm onAddTodo={addTodoItem}/></div>
                 {isLoading ? (
                   <p>Loading...</p>
                   ) : (
