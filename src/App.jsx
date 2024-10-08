@@ -8,7 +8,7 @@ import AddTodoForm from './components/AddTodoForm';
 import { useEffect , useState } from 'react';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
-const url=`https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}?view=Grid%20view&?sort[0][field]=Title&?sort[0][direction]="asc"`;
+const url=`https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
 function App() {
   
   const [todoList ,settodoList]= useState([]);
@@ -100,26 +100,23 @@ function App() {
     headers:{Authorization:`Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`},
   } ;
   
- 
-
+  const loadUrl=url+'?view=Grid%20view&?sort[0][field]=Title&?sort[0][direction]="asc"'
+   console.log('loading url is :' , loadUrl);
   try{
-    const response = await fetch(url, options);
+    const response = await fetch(loadUrl, options);
     if (! response.ok){
       throw new Err(`${response.status}`) ;
     }
     const data=await response.json();
-    const Todos= data.records.map((Td)=> {return {  id:Td.id , title:Td.fields.title }; });
-    const todosList=Todos.sort((objectA, objectB)=>{
-      if (objectA.title< objectB.title){
-        return 1;
-      } else if(objectA.title===objectB.title){
-        return 0;
-      } else {
-        return -1;
-      }
+    const todos= data.records.map((Td)=> {return {  id:Td.id , title:Td.fields.title }; });
+    const todosList=todos.sort((objectA, objectB)=>{
+      
+      
+      return  objectA.title.localeCompare(objectB.title);
+     
     }) ;
   
-     settodoList(Todos);
+     settodoList(todos);
      setIsLoading (false);
   }
   catch(error){
@@ -136,15 +133,18 @@ function App() {
 
   function handleSortToggleClick(){
     setSortAcs(!sortAcs); // Toggle between Asc and Desc
-    const sortedList = [...todoList].sort((a, b) => {
-      if (sortAcs) {
-        // Sort Descending
-        return a.title.toLowerCase() > b.title.toLowerCase() ? -1 : 1;
-      } else {
-        // Sort Ascending
-        return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1;
-      }
-    });
+    const sortedList = [...todoList].sort((a, b) => 
+      sortAcs ? b.title.localeCompare(a.title) : a.title.localeCompare(b.title)
+    );
+    // const sortedList = [...todoList].sort((a, b) => {
+    //   if (sortAcs) {
+    //     // Sort Descending
+    //     return a.title.toLowerCase() > b.title.toLowerCase() ? -1 : 1;
+    //   } else {
+    //     // Sort Ascending
+    //     return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1;
+    //   }
+   // });
     settodoList(sortedList);
 
   }
