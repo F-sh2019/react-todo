@@ -13,7 +13,11 @@ function App() {
   
   const [todoList ,settodoList]= useState([]);
   const [isLoading ,setIsLoading ]=useState(true) ;
+  const [sortAcs , setSortAcs]=useState(true); 
   
+  
+
+
   async function RemoveTodoItem(todoId) {
     
     const options = {
@@ -96,20 +100,23 @@ function App() {
     headers:{Authorization:`Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`},
   } ;
   
- 
-
+  const loadUrl=url+'?view=Grid%20view&?sort[0][field]=Title&?sort[0][direction]="asc"'
+   console.log('loading url is :' , loadUrl);
   try{
-    const response = await fetch(url, options) ;
+    const response = await fetch(loadUrl, options);
     if (! response.ok){
       throw new Err(`${response.status}`) ;
     }
     const data=await response.json();
-   
-     const Todos= data.records.map((Td)=> {return {  id:Td.id , title:Td.fields.title }; 
-          
-     });
-
-     settodoList(Todos);
+    const todos= data.records.map((Td)=> {return {  id:Td.id , title:Td.fields.title }; });
+    const todosList=todos.sort((objectA, objectB)=>{
+      
+      
+      return  objectA.title.localeCompare(objectB.title);
+     
+    }) ;
+  
+     settodoList(todos);
      setIsLoading (false);
   }
   catch(error){
@@ -124,7 +131,23 @@ function App() {
       fetchData()
   }, []);
 
-  
+  function handleSortToggleClick(){
+    setSortAcs(!sortAcs); // Toggle between Asc and Desc
+    const sortedList = [...todoList].sort((a, b) => 
+      sortAcs ? b.title.localeCompare(a.title) : a.title.localeCompare(b.title)
+    );
+    // const sortedList = [...todoList].sort((a, b) => {
+    //   if (sortAcs) {
+    //     // Sort Descending
+    //     return a.title.toLowerCase() > b.title.toLowerCase() ? -1 : 1;
+    //   } else {
+    //     // Sort Ascending
+    //     return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1;
+    //   }
+   // });
+    settodoList(sortedList);
+
+  }
   
   return (
     <BrowserRouter>
@@ -133,8 +156,9 @@ function App() {
           <main className={styles.main}>
               
                 <div className={styles.test}><h1 >Todo List </h1></div>
-                 
-                <div className={styles.test}><AddTodoForm onAddTodo={addTodoItem}/></div>
+                
+                <div className={styles.test}><button onClick={handleSortToggleClick}>{sortAcs ? "Sort Asc" : "Sort Desc"}</button>
+                <AddTodoForm onAddTodo={addTodoItem}/></div>
                 {isLoading ? (
                   <p>Loading...</p>
                   ) : (
