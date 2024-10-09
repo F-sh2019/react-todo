@@ -1,0 +1,15 @@
+
+.homeP{
+    
+    display: flex;               /* Use flexbox layout */
+    justify-content: center;      /* Center horizontally */
+    align-items: center;          /* Center vertically */
+    height: 100vh;                /* Set height to full viewport */
+    text-align: center;           /* Center text horizontally */
+    background-color: rgb(108, 190, 223);  /* Background color */
+    box-shadow: 0 4px 8px turquoise;  /* Add shadow with the correct syntax */
+}
+
+h1{
+    font-size: 2rem ;
+}

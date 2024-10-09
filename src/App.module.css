@@ -47,17 +47,28 @@ h1{
   font-size: 1rem;
   color: #6200ea;
 }
-body {
+/* body {
   margin: 0;
   font-family: 'Arial', sans-serif;
-  background-color: #f5f5f5; 
+  background-color: #0d648d; 
   display: flex;
   flex-direction: row; 
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+} */
+
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
 
 
 
@@ -68,7 +79,7 @@ section {
 
 
 .test {
-  color: #333;
+  color: #039dda;
   background-color: #f0f0f0;
   padding: 10px;
   border-radius: 5px;

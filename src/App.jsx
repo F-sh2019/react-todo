@@ -6,7 +6,10 @@ import styles from './App.module.css'
 import TodoList from './components/TodoList'
 import AddTodoForm from './components/AddTodoForm';
 import { useEffect , useState } from 'react';
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {BrowserRouter, Routes, Route, Link} from 'react-router-dom'
+import routing from './routing.jsx'
+import Home from './Home.jsx';
+import Navbar from './components/Navbar.jsx'
 
 const url=`https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
 function App() {
@@ -14,6 +17,7 @@ function App() {
   const [todoList ,settodoList]= useState([]);
   const [isLoading ,setIsLoading ]=useState(true) ;
   const [sortAcs , setSortAcs]=useState(true); 
+  const [showAddtodo , setShowAddtodo]=useState(false);
   
   
 
@@ -79,7 +83,7 @@ function App() {
       
 
       const data = await response.json();
-      console.log(data.fields.title);
+      
       const newtodoList = {
         title: data.fields.title,
         id: data.id,
@@ -101,7 +105,7 @@ function App() {
   } ;
   
   const loadUrl=url+'?view=Grid%20view&?sort[0][field]=Title&?sort[0][direction]="asc"'
-   console.log('loading url is :' , loadUrl);
+   
   try{
     const response = await fetch(loadUrl, options);
     if (! response.ok){
@@ -136,42 +140,83 @@ function App() {
     const sortedList = [...todoList].sort((a, b) => 
       sortAcs ? b.title.localeCompare(a.title) : a.title.localeCompare(b.title)
     );
-    // const sortedList = [...todoList].sort((a, b) => {
-    //   if (sortAcs) {
-    //     // Sort Descending
-    //     return a.title.toLowerCase() > b.title.toLowerCase() ? -1 : 1;
-    //   } else {
-    //     // Sort Ascending
-    //     return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1;
-    //   }
-   // });
+   
     settodoList(sortedList);
 
   }
   
   return (
-    <BrowserRouter>
+      <BrowserRouter>
+       <div>
+      
+      <Navbar/>
       <Routes>
-        <Route path="/" element={
-          <main className={styles.main}>
-              
-                <div className={styles.test}><h1 >Todo List </h1></div>
-                
-                <div className={styles.test}><button onClick={handleSortToggleClick}>{sortAcs ? "Sort Asc" : "Sort Desc"}</button>
-                <AddTodoForm onAddTodo={addTodoItem}/></div>
-                {isLoading ? (
-                  <p>Loading...</p>
-                  ) : (
-                    <TodoList todoList={todoList} onRemoveTodo={RemoveTodoItem} /> 
-                  )}
+        
+        <Route path="/todo" element={
+         <main className={styles.main}>
+             
+               <div className={styles.test}><h1 >Todo List </h1></div>
                
-          </main>
-            }>
-          
-        </Route>
-        <Route path="/new" element={<h1>New TodoList</h1>}/>
-      </Routes>
-    </BrowserRouter>
+               <div className={styles.test}><button onClick={handleSortToggleClick}>{sortAcs ? "Sort Asc" : "Sort Desc"}</button>
+               <AddTodoForm onAddTodo={addTodoItem}/></div>
+               {isLoading ? (
+                 <p>Loading...</p>
+                 ) : (
+                   <TodoList todoList={todoList} onRemoveTodo={RemoveTodoItem} /> 
+                 )}
+              
+         </main>
+           }>
+         
+       </Route> 
+       <Route path="/AddTodo" element={
+         <main className={styles.main}>
+             
+               <div className={styles.test}><h1 >Todo List </h1></div>
+               
+               <div className={styles.test}><button onClick={handleSortToggleClick}>{sortAcs ? "Sort Asc" : "Sort Desc"}</button>
+               <AddTodoForm onAddTodo={addTodoItem}/></div>
+               {isLoading ? (
+                 <p>Loading...</p>
+                 ) : (
+                   <TodoList todoList={todoList} onRemoveTodo={RemoveTodoItem} /> 
+                 )}
+              
+         </main>
+           } />
+
+        
+
+       <Route path="/" element={<Home/>} />
+     </Routes>       
+      </div>
+     </BrowserRouter> 
+   
+  //  <BrowserRouter>
+  //   <div>
+  //       {/* Navigation Menu */}
+  //       <nav>
+  //         <ul>
+  //           <li>
+  //             <Link to="/">Home</Link>
+  //           </li>
+  //           <li>
+  //             <Link to="/todos">Todo List</Link>
+  //           </li>
+  //         </ul>
+  //       </nav>
+
+  //       {/* Routing */}
+  //       <Routes>
+  //         {/* Route for Home Page */}
+  //         <Route path="/" element={<Home />} />
+
+  //         {/* Route for TodoList Component */}
+  //         <Route path="/todos" element={<TodoList />} />
+  //       </Routes>
+  //     </div>
+  //  </BrowserRouter>
+        
   );
 }
 
