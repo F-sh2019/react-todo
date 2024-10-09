@@ -14,9 +14,12 @@ return (
     
 )
 }
-TodoList.PropTypes={
-  todoList:PropTypes.func,
-  onRemoveTodo: PropTypes.func,
+TodoList.propTypes={
+  // todoList:PropTypes.func,
+  
+  // onRemoveTodo: PropTypes.func,
+  todoList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onRemoveTodo: PropTypes.func.isRequired
   
 
 } ;
