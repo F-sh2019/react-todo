@@ -7,15 +7,17 @@ export default function TodoListItem({todo , onRemoveTodo , id}){
     return(
          <section className={styles.data}>
         <li className = {styles.ListItem}>{todo}
-            <button  onClick={()=>onRemoveTodo(id) }>-</button>
+            <button  onClick={()=> onRemoveTodo(id) }>-</button>
         </li>
          </section>
     );
 
 }
-TodoListItem.PropTypes={
-    todo:PropTypes.func,
-    onRemoveTodo: PropTypes.func,
-    id:PropTypes.func,
-  
-  } ;
+TodoListItem.propTypes = {
+    todo: PropTypes.string.isRequired, 
+    onRemoveTodo: PropTypes.func.isRequired,
+    id: PropTypes.oneOfType([           // Allows either a string or a number
+        PropTypes.string,
+        PropTypes.number,
+    ]).isRequired,
+};

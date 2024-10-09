@@ -10,14 +10,14 @@ export default function navbar() {
       <Link to="/">Home</Link>
     </li>
     <li>
-      <Link to="/todo">ShowList</Link>
+      <Link to="/ShowList">ShowList</Link>
     </li>
     <li>
       <Link to="/AddTodo">Add Todo</Link>
     </li>
-    <li>
+    {/* <li>
       <Link to="/todo">Delete Todo</Link>
-    </li>
+    </li> */}
     </ul>
   </div>
   );

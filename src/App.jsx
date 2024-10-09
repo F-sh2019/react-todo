@@ -10,15 +10,16 @@ import {BrowserRouter, Routes, Route, Link} from 'react-router-dom'
 import routing from './routing.jsx'
 import Home from './Home.jsx';
 import Navbar from './components/Navbar.jsx'
+import PropTypes from 'prop-types';
 
-const url=`https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
-function App() {
+//const url=`https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+function App({tableName}) {
   
   const [todoList ,settodoList]= useState([]);
   const [isLoading ,setIsLoading ]=useState(true) ;
   const [sortAcs , setSortAcs]=useState(true); 
   const [showAddtodo , setShowAddtodo]=useState(false);
-  
+  const url=`https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${tableName}`;
   
 
 
@@ -152,13 +153,10 @@ function App() {
       <Navbar/>
       <Routes>
         
-        <Route path="/todo" element={
+        <Route path="/ShowList" element={
          <main className={styles.main}>
              
-               <div className={styles.test}><h1 >Todo List </h1></div>
-               
-               <div className={styles.test}><button onClick={handleSortToggleClick}>{sortAcs ? "Sort Asc" : "Sort Desc"}</button>
-               <AddTodoForm onAddTodo={addTodoItem}/></div>
+             <button onClick={handleSortToggleClick}>{sortAcs ? "Sort Asc" : "Sort Desc"}</button>
                {isLoading ? (
                  <p>Loading...</p>
                  ) : (
@@ -171,9 +169,7 @@ function App() {
        </Route> 
        <Route path="/AddTodo" element={
          <main className={styles.main}>
-             
-               <div className={styles.test}><h1 >Todo List </h1></div>
-               
+                          
                <div className={styles.test}><button onClick={handleSortToggleClick}>{sortAcs ? "Sort Asc" : "Sort Desc"}</button>
                <AddTodoForm onAddTodo={addTodoItem}/></div>
                {isLoading ? (
@@ -192,32 +188,11 @@ function App() {
       </div>
      </BrowserRouter> 
    
-  //  <BrowserRouter>
-  //   <div>
-  //       {/* Navigation Menu */}
-  //       <nav>
-  //         <ul>
-  //           <li>
-  //             <Link to="/">Home</Link>
-  //           </li>
-  //           <li>
-  //             <Link to="/todos">Todo List</Link>
-  //           </li>
-  //         </ul>
-  //       </nav>
-
-  //       {/* Routing */}
-  //       <Routes>
-  //         {/* Route for Home Page */}
-  //         <Route path="/" element={<Home />} />
-
-  //         {/* Route for TodoList Component */}
-  //         <Route path="/todos" element={<TodoList />} />
-  //       </Routes>
-  //     </div>
-  //  </BrowserRouter>
-        
+  
   );
 }
-
+App.propTypes = {
+  tableName: PropTypes.string.isRequired
+};
 export default App
+
